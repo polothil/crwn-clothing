@@ -7,8 +7,10 @@ import { auth } from '../../firebase/firebase.utils';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 
 import './Header.scss';
+import CartIcon from '../CartIcon/CartIcon';
+import CartDropDown from '../CartDropDown/CartDropDown';
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
   return (
     <div className='header'>
       <Link className='logo-container' to='/'>
@@ -30,13 +32,20 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
+        <CartIcon />
       </div>
+      {!hidden && <CartDropDown />}
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { currentUser: state.user.currentUser };
+// Without Destructuring
+// const mapStateToProps = (state) => {
+//   return { currentUser: state.user.currentUser };
+// };
+
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => {
+  return { currentUser, hidden };
 };
 
 export default connect(mapStateToProps)(Header);
